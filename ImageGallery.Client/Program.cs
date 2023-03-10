@@ -76,6 +76,10 @@ builder.Services
             // SignedOutCallbackPath: default = host:port/signout-callback-oidc.
             // Must watch with the post logout redirec URI at IDP client config if you want to automatically return to the application after logging out of IdentityServer. To change, set SignedOutCallbackPath, e.g. SignOutCallbackPath = "pathaftersignout"
             // options.SignedOutCallbackPath
+
+            
+            options.GetClaimsFromUserInfoEndpoint = true;
+
         });
 
 var app = builder.Build();

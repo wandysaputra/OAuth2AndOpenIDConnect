@@ -62,6 +62,9 @@ public static class Config
             {
                 "https://localhost:7184/signout-callback-oidc"
             }
+
+            // should the user claims always be added to the id token instead of requiring the client to use the userinfo endpoint.
+            // , AlwaysIncludeUserClaimsInIdToken = true
         }
     };
 }
