@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,8 +52,14 @@ builder.Services
             options.ClientId = "imagegalleryclient";
             options.ClientSecret = "secret";
 
-            // ResponseType corresponds to a grant or flow.
-            options.ResponseType = "code";
+            // ResponseType corresponds to a grant or flow. PKCE enabled by default
+            options.ResponseType = OpenIdConnectResponseType.Code;
+            
+            // Enables or disables the use of the Proof Key for Code Exchange (PKCE) standard.
+            // This only applies when the "ResponseType" is set to "OpenIdConnectResponseType.Code".
+            // The default value is `true`.
+            // options.UsePkce = true;
+
 
             // Scopes we want to request. By default, openid and profile scopes are requested by the middleware
             // options.Scope.Add("openid");
