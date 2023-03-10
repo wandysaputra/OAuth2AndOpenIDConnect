@@ -71,6 +71,11 @@ builder.Services
             // This allows the middleware to save the tokens it receives from the identity provider.
             options.SaveTokens = true;
 
+
+            // options.CallbackPath = new PathString("signin-oidc");
+            // SignedOutCallbackPath: default = host:port/signout-callback-oidc.
+            // Must watch with the post logout redirec URI at IDP client config if you want to automatically return to the application after logging out of IdentityServer. To change, set SignedOutCallbackPath, e.g. SignOutCallbackPath = "pathaftersignout"
+            // options.SignedOutCallbackPath
         });
 
 var app = builder.Build();

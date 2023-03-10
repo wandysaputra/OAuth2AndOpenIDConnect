@@ -58,6 +58,10 @@ public static class Config
             }
             // Specifies whether a consent screen is required (defaults to false)
             , RequireConsent = true
+            , PostLogoutRedirectUris =
+            {
+                "https://localhost:7184/signout-callback-oidc"
+            }
         }
     };
 }
