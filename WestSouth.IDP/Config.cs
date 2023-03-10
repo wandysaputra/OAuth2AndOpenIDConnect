@@ -56,6 +56,8 @@ public static class Config
             {
                 new Secret("secret".Sha256())
             }
+            // Specifies whether a consent screen is required (defaults to false)
+            , RequireConsent = true
         }
     };
 }
