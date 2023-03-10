@@ -6,3 +6,5 @@ Install Identity Server Template
 - dotnet new --list
 
 - dotnet new isempty -n WestSouth.IDP
+
+- dotnet new isui
