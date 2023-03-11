@@ -38,7 +38,10 @@ builder.Services
     })
     // this configure the cookie handler and it enables our application to use cookie-based authentication or our default scheme.
     // once an identity token is validated and transformed into a claim identity, it will be stored in an encrypted cookie, and that cookie is then used on subsequent requests to the web app to check whether or not we are making an authenticated request. In other word it's the cookie that is checked by our web app because we configure it like this.
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+    {
+        options.AccessDeniedPath = "/Authentication/AccessDenied"; // handles redirection when access is denied
+    })
     // to register and configure the OpenID Connect handler.
     // This enables our application to support OpenID Connect Authentication workflow. It is this handler that will handle creating the authorization requests, token request, and other requests, and it will ensure that identity token validation happens.
     .AddOpenIdConnect(
@@ -98,7 +101,14 @@ builder.Services
             options.ClaimActions.MapJsonKey(
                 JwtClaimTypes.Role, // claim type we want to see by client
                 JwtClaimTypes.Role // claim type coming from IDP
-                ); 
+                );
+
+            // Need to tell ClaimPrincipal where to find user's role by ClaimType
+            options.TokenValidationParameters = new()
+            {
+                NameClaimType = JwtClaimTypes.GivenName,
+                RoleClaimType = JwtClaimTypes.Role
+            };
         });
 
 var app = builder.Build();

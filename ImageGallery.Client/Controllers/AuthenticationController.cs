@@ -18,5 +18,10 @@ namespace ImageGallery.Client.Controllers
             // Redirects to the IDP linked to scheme `OpenIdConnectDefaults.AuthenticationScheme` so it can clear its own session/cookie
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
