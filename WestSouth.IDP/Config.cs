@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
+using IdentityModel;
 
 namespace WestSouth.IDP;
 
@@ -7,15 +8,15 @@ public static class Config
 {
     public static IEnumerable<IdentityResource> IdentityResources =>
         new IdentityResource[]
-        { 
+        {
             // Scope: OpenId
             // Claims: sub (user identifier)
-            new IdentityResources.OpenId(), 
-            
+            new IdentityResources.OpenId(),
+
             // Scope: Profile
             // Claims: name, family_name, given_name, middle_name, nickname, preferred_username, profile, picture, website, gender, birthdate, zoneinfo, locale, updated_at
             new IdentityResources.Profile()
-            
+
             // Scope: Email
             // Claims: email, email_verified
             // , new IdentityResources.Email()
@@ -30,6 +31,8 @@ public static class Config
 
             // Scope: offline_access
             // Claims: doesn't map to any claim, but allow long-lived access.
+
+            , new IdentityResource("roles", "Your role(s)", new[] { JwtClaimTypes.Role })
         };
 
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -50,7 +53,8 @@ public static class Config
             AllowedScopes =
             {
                 IdentityServerConstants.StandardScopes.OpenId,
-                IdentityServerConstants.StandardScopes.Profile
+                IdentityServerConstants.StandardScopes.Profile,
+                "roles"
             }, 
             ClientSecrets =
             {

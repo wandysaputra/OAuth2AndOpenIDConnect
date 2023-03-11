@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -86,10 +87,18 @@ builder.Services
             options.GetClaimsFromUserInfoEndpoint = true;
 
             // Manipulating the Claims Collection
-            // default claims and its filters refer to https://github.com/dotnet/aspnetcore/blob/main/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectOptions.cs
+            // default claims and its filters refer to https://github.com/dotnet/aspnetcore/blob/53e77ee73f687c1c8961f399633926e58c37f085/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectOptions.cs#L46
             options.ClaimActions.Remove("aud"); // this is remove default claim filter
             options.ClaimActions.DeleteClaim("sid"); // this is remove claim
             options.ClaimActions.DeleteClaim("idp"); // this is remove claim
+
+            // Add request scope roles for Role-based Authorization
+            options.Scope.Add("roles");
+            // add new mapping as not mapped by default, refer https://github.com/dotnet/aspnetcore/blob/53e77ee73f687c1c8961f399633926e58c37f085/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectOptions.cs#L61 AND http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
+            options.ClaimActions.MapJsonKey(
+                JwtClaimTypes.Role, // claim type we want to see by client
+                JwtClaimTypes.Role // claim type coming from IDP
+                ); 
         });
 
 var app = builder.Build();
