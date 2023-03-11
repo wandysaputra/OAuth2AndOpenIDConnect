@@ -16,13 +16,15 @@ builder.Services.AddControllersWithViews()
 // keeping the original claim types.. remove backward compatibility by Microsoft WS-Security standard
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
+builder.Services.AddAccessTokenManagement();// this registers the required services for access token management
+
 // create an HttpClient used for accessing the API
 builder.Services.AddHttpClient("APIClient", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["ImageGalleryAPIRoot"]);
     client.DefaultRequestHeaders.Clear();
     client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-});
+}).AddUserAccessTokenHandler();
 
 /* To store the user's identity
  * `builder.Services.AddAuthentication` to configure authentication middleware
@@ -109,6 +111,8 @@ builder.Services
                 NameClaimType = JwtClaimTypes.GivenName,
                 RoleClaimType = JwtClaimTypes.Role
             };
+
+            options.Scope.Add("imagegalleryapi.fullaccess");
         });
 
 var app = builder.Build();
