@@ -38,7 +38,9 @@ public static class Config
     public static IEnumerable<ApiResource> ApiResources =>
         new ApiResource[]
         {
-            new ApiResource("imagegalleryapi", "Image Gallery API")
+            new ApiResource("imagegalleryapi"
+                , "Image Gallery API"
+                , new[] { JwtClaimTypes.Role })
             {
                 Scopes = { "imagegalleryapi.fullaccess" }
             }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ImageGallery.API.Services
 {
-    public class GalleryRepository : IGalleryRepository 
+    public class GalleryRepository : IGalleryRepository
     {
         private readonly GalleryContext _context;
 
@@ -23,10 +23,11 @@ namespace ImageGallery.API.Services
         {
             return await _context.Images.FirstOrDefaultAsync(i => i.Id == id);
         }
-  
-        public async Task<IEnumerable<Image>> GetImagesAsync()
+
+        public async Task<IEnumerable<Image>> GetImagesAsync(string ownerId)
         {
             return await _context.Images
+                .Where(w => w.OwnerId == ownerId)
                 .OrderBy(i => i.Title).ToListAsync();
         }
 
