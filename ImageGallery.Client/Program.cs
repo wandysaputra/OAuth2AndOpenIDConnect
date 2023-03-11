@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -9,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(configure => 
         configure.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+// keeping the original claim types.. remove backward compatibility by Microsoft WS-Security standard
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 // create an HttpClient used for accessing the API
 builder.Services.AddHttpClient("APIClient", client =>
@@ -80,6 +85,11 @@ builder.Services
             
             options.GetClaimsFromUserInfoEndpoint = true;
 
+            // Manipulating the Claims Collection
+            // default claims and its filters refer to https://github.com/dotnet/aspnetcore/blob/main/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectOptions.cs
+            options.ClaimActions.Remove("aud"); // this is remove default claim filter
+            options.ClaimActions.DeleteClaim("sid"); // this is remove claim
+            options.ClaimActions.DeleteClaim("idp"); // this is remove claim
         });
 
 var app = builder.Build();
