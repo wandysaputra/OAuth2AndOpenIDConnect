@@ -34,6 +34,7 @@ public class TestUsers
 
                     Claims = new List<Claim>
                     {
+                        new Claim("country", "nl"),
                         new Claim(JwtClaimTypes.Role, "FreeUser"),
                         new Claim(JwtClaimTypes.GivenName, "David"),
                         new Claim(JwtClaimTypes.FamilyName, "Flagg")
@@ -47,6 +48,7 @@ public class TestUsers
 
                     Claims = new List<Claim>
                     {
+                        new Claim("country", "be"),
                         new Claim(JwtClaimTypes.Role, "PayingUser"),
                         new Claim(JwtClaimTypes.GivenName, "Emma"),
                         new Claim(JwtClaimTypes.FamilyName, "Flagg")
@@ -59,6 +61,7 @@ public class TestUsers
                     Password = "alice",
                     Claims =
                     {
+                        new Claim("country", "nl"),
                         new Claim(JwtClaimTypes.Role, "FreeUser"),
                         new Claim(JwtClaimTypes.Name, "Alice Smith"),
                         new Claim(JwtClaimTypes.GivenName, "Alice"),
@@ -76,6 +79,7 @@ public class TestUsers
                     Password = "bob",
                     Claims =
                     {
+                        new Claim("country", "be"),
                         new Claim(JwtClaimTypes.Role, "PayingUser"),
                         new Claim(JwtClaimTypes.Name, "Bob Smith"),
                         new Claim(JwtClaimTypes.GivenName, "Bob"),

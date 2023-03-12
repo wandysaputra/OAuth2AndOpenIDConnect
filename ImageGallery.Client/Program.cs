@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using IdentityModel;
+using ImageGallery.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -113,7 +114,19 @@ builder.Services
             };
 
             options.Scope.Add("imagegalleryapi.fullaccess");
+
+            // Attribute based Access Control or Policy based Access Control
+            options.Scope.Add("country");
+            options.ClaimActions.MapUniqueJsonKey(
+                "country", // claim type we want to see by client
+                "country" // claim type coming from IDP
+            );
         });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("UserCanAddImage", AuthorizationPolicies.CanAddImage());
+});
 
 var app = builder.Build();
 

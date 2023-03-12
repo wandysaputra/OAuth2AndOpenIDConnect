@@ -33,6 +33,8 @@ public static class Config
             // Claims: doesn't map to any claim, but allow long-lived access.
 
             , new IdentityResource("roles", "Your role(s)", new[] { JwtClaimTypes.Role })
+
+            , new IdentityResource("country", "The country you're living in", new[] { "country" })
         };
 
     public static IEnumerable<ApiResource> ApiResources =>
@@ -40,7 +42,7 @@ public static class Config
         {
             new ApiResource("imagegalleryapi"
                 , "Image Gallery API"
-                , new[] { JwtClaimTypes.Role })
+                , new[] { JwtClaimTypes.Role, "country" })
             {
                 Scopes = { "imagegalleryapi.fullaccess" }
             }
@@ -68,7 +70,8 @@ public static class Config
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile,
                 "roles",
-                "imagegalleryapi.fullaccess"
+                "imagegalleryapi.fullaccess",
+                "country"
             }, 
             ClientSecrets =
             {
