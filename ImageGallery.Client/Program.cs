@@ -113,7 +113,7 @@ builder.Services
                 RoleClaimType = JwtClaimTypes.Role
             };
 
-            options.Scope.Add("imagegalleryapi.fullaccess");
+            // options.Scope.Add("imagegalleryapi.fullaccess");
 
             // Attribute based Access Control or Policy based Access Control
             options.Scope.Add("country");
@@ -121,6 +121,9 @@ builder.Services
                 "country", // claim type we want to see by client
                 "country" // claim type coming from IDP
             );
+
+            options.Scope.Add("imagegalleryapi.read");
+            options.Scope.Add("imagegalleryapi.write");
         });
 
 builder.Services.AddAuthorization(options =>
