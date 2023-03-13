@@ -27,6 +27,13 @@ builder.Services.AddHttpClient("APIClient", client =>
     client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
 }).AddUserAccessTokenHandler();
 
+
+// create an HttpClient used for accessing the API
+builder.Services.AddHttpClient("IDPClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:5001/");
+});
+
 /* To store the user's identity
  * `builder.Services.AddAuthentication` to configure authentication middleware
  */

@@ -1,27 +1,67 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-namespace ImageGallery.Client.Controllers
+namespace ImageGallery.Client.Controllers;
+
+public class AuthenticationController : Controller
 {
-    
-    public class AuthenticationController : Controller
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    public AuthenticationController(IHttpClientFactory httpClientFactory)
     {
-        [Authorize]
-        public async Task Logout()
-        {
-            // Clears the local cookie
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+    }
+    [Authorize]
+    public async Task Logout()
+    {
+        var clientIDP = _httpClientFactory.CreateClient("IDPClient");
 
-            // Redirects to the IDP linked to scheme `OpenIdConnectDefaults.AuthenticationScheme` so it can clear its own session/cookie
-            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+        var discoveryDocumentResponse = await clientIDP.GetDiscoveryDocumentAsync();
+        if (discoveryDocumentResponse?.IsError ?? true)
+        {
+            throw new Exception(discoveryDocumentResponse?.Error);
         }
 
-        public IActionResult AccessDenied()
+        var accessTokenRevocationResponse = await clientIDP.RevokeTokenAsync(new()
         {
-            return View();
+            Address = discoveryDocumentResponse.RevocationEndpoint
+            , ClientId = "imagegalleryclient"
+            , ClientSecret = "secret"
+            , Token = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken)
+        });
+
+        if (accessTokenRevocationResponse?.IsError ?? true)
+        {
+            throw new Exception(accessTokenRevocationResponse?.Error);
         }
+
+        var refreshTokenRevocationResponse = await clientIDP.RevokeTokenAsync(new()
+        {
+            Address = discoveryDocumentResponse.RevocationEndpoint
+            , ClientId = "imagegalleryclient"
+            , ClientSecret = "secret"
+            , Token = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken)
+        });
+
+        if (refreshTokenRevocationResponse?.IsError ?? true)
+        {
+            throw new Exception(refreshTokenRevocationResponse?.Error);
+        }
+
+        // Clears the local cookie
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        // Redirects to the IDP linked to scheme `OpenIdConnectDefaults.AuthenticationScheme` so it can clear its own session/cookie
+        await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+    }
+
+    public IActionResult AccessDenied()
+    {
+        return View();
     }
 }

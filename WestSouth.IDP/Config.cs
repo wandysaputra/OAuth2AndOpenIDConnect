@@ -52,6 +52,7 @@ public static class Config
                     "imagegalleryapi.read",
                     "imagegalleryapi.write"
                 }
+                , ApiSecrets = { new Secret("apisecret".Sha256()) }
             }
         };
 
@@ -105,6 +106,9 @@ public static class Config
             // , RefreshTokenExpiration = TokenExpiration.Sliding // default 30 days
             // , SlidingRefreshTokenLifetime = 300 // default 15 days and won't exceed RefreshTokenExpiration
             , UpdateAccessTokenClaimsOnRefresh = true
+
+            // Set Access Token to Reference Token
+            , AccessTokenType = AccessTokenType.Reference
         }
     };
 }
