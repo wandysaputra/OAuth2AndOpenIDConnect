@@ -124,6 +124,9 @@ builder.Services
 
             options.Scope.Add("imagegalleryapi.read");
             options.Scope.Add("imagegalleryapi.write");
+
+            options.Scope.Add("offline_access");
+
         });
 
 builder.Services.AddAuthorization(options =>

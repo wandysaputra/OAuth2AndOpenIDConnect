@@ -30,6 +30,8 @@ public static class Config
             // , new IdentityResources.Phone()
 
             // Scope: offline_access
+            // Access to your applications and resources, even when you are offline.
+            // Offline in this context means the user is not logged in to the IDP
             // Claims: doesn't map to any claim, but allow long-lived access.
 
             , new IdentityResource("roles", "Your role(s)", new[] { JwtClaimTypes.Role })
@@ -95,6 +97,14 @@ public static class Config
 
             // should the user claims always be added to the id token instead of requiring the client to use the userinfo endpoint.
             // , AlwaysIncludeUserClaimsInIdToken = true
+
+            , IdentityTokenLifetime = 30  // default 300 secs / 5 mins
+            , AuthorizationCodeLifetime =  30 // default 300 secs / 5 mins
+            , AccessTokenLifetime = 30 // default 3600 secs / 1 hour
+            , AllowOfflineAccess = true // required to support refresh tokens
+            // , RefreshTokenExpiration = TokenExpiration.Sliding // default 30 days
+            // , SlidingRefreshTokenLifetime = 300 // default 15 days and won't exceed RefreshTokenExpiration
+            , UpdateAccessTokenClaimsOnRefresh = true
         }
     };
 }
