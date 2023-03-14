@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Marvin.IDP.Entities;
 
 namespace WestSouth.IDP.Entities;
 
@@ -25,5 +24,12 @@ public class User : IConcurrencyAware
     public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
 
     public ICollection<UserClaim> Claims { get; set; } = new List<UserClaim>();
+    
+    [MaxLength(200)]
+    public string Email { get; set; }
+    
+    [MaxLength(200)]
+    public string? SecurityCode { get; set; }
 
+    public DateTime SecurityCodeExpirationDate { get; set; }
 }

@@ -20,7 +20,7 @@ namespace WestSouth.IDP.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
 
-            modelBuilder.Entity("Marvin.IDP.Entities.UserClaim", b =>
+            modelBuilder.Entity("WestSouth.IDP.Entities.UserClaim", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -177,7 +177,7 @@ namespace WestSouth.IDP.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Marvin.IDP.Entities.UserClaim", b =>
+            modelBuilder.Entity("WestSouth.IDP.Entities.UserClaim", b =>
                 {
                     b.HasOne("WestSouth.IDP.Entities.User", "User")
                         .WithMany("Claims")

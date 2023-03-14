@@ -1,5 +1,4 @@
-﻿using Marvin.IDP.Entities;
-using WestSouth.IDP.Entities;
+﻿using WestSouth.IDP.Entities;
 
 namespace WestSouth.IDP.Services;
 
@@ -19,9 +18,10 @@ public interface ILocalUserService
         string subject);
 
     void AddUser
-        (User userToAdd);
+        (User userToAdd, string password);
 
     Task<bool> IsUserActiveAsync(string subject);
 
     Task<bool> SaveChangesAsync();
+    Task<bool> ActivateUserAsync(string securityCode);
 }

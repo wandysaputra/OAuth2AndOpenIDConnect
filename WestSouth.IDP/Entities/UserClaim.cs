@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WestSouth.IDP.Entities;
 
-namespace Marvin.IDP.Entities;
+namespace WestSouth.IDP.Entities;
 
 public class UserClaim : IConcurrencyAware
 {
