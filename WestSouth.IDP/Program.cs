@@ -22,7 +22,11 @@ try
     
     app.Run();
 }
-catch (Exception ex)
+// https://github.com/dotnet/efcore/issues/29923
+// https://github.com/dotnet/efcore/issues/29809
+// Unhandled exception
+// Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+catch (Exception ex) when(ex is not HostAbortedException)
 {
     Log.Fatal(ex, "Unhandled exception");
 }
