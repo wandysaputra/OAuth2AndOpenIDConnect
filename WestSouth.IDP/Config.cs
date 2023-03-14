@@ -99,12 +99,13 @@ public static class Config
             // should the user claims always be added to the id token instead of requiring the client to use the userinfo endpoint.
             // , AlwaysIncludeUserClaimsInIdToken = true
 
-            , IdentityTokenLifetime = 30  // default 300 secs / 5 mins
-            , AuthorizationCodeLifetime =  30 // default 300 secs / 5 mins
-            , AccessTokenLifetime = 30 // default 3600 secs / 1 hour
+            , IdentityTokenLifetime = (int) TimeSpan.FromMinutes(1).TotalSeconds // default 300 secs / 5 mins
+            , AuthorizationCodeLifetime = (int) TimeSpan.FromMinutes(1).TotalSeconds  // default 300 secs / 5 mins
+            , AccessTokenLifetime = (int) TimeSpan.FromMinutes(1).TotalSeconds  // default 3600 secs / 1 hour
             , AllowOfflineAccess = true // required to support refresh tokens
-            // , RefreshTokenExpiration = TokenExpiration.Sliding // default 30 days
-            // , SlidingRefreshTokenLifetime = 300 // default 15 days and won't exceed RefreshTokenExpiration
+            , AbsoluteRefreshTokenLifetime = (int) TimeSpan.FromDays(1).TotalSeconds // Maximum lifetime of a refresh token in seconds. Defaults to 2592000 seconds / 30 days
+            , RefreshTokenExpiration = TokenExpiration.Sliding // Absolute: the refresh token will expire on a fixed point in time (specified by the AbsoluteRefreshTokenLifetime). Sliding: when refreshing the token, the lifetime of the refresh token will be renewed (by the amount specified in SlidingRefreshTokenLifetime). The lifetime will not exceed AbsoluteRefreshTokenLifetime.
+            , SlidingRefreshTokenLifetime = (int) TimeSpan.FromMinutes(2).TotalSeconds  // Sliding lifetime of a refresh token in seconds. Defaults to 1296000 seconds / 15 days
             , UpdateAccessTokenClaimsOnRefresh = true
 
             // Set Access Token to Reference Token
