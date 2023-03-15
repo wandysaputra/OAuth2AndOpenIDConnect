@@ -10,6 +10,19 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        // configures IIS out-of-proc settings
+        builder.Services.Configure<IISOptions>(iisOptions =>
+        {
+            iisOptions.AuthenticationDisplayName = "Windows";
+            iisOptions.AutomaticAuthentication = false;
+        });
+        // .. or configures IIS in-proc settings
+        builder.Services.Configure<IISServerOptions>(iisServerOptions =>
+        {
+            iisServerOptions.AuthenticationDisplayName = "Windows";
+            iisServerOptions.AutomaticAuthentication = false; // disable the IIS integration layer configuring Windows Authentication handlers that can be invoked via an authentication service. We want to integration happen via our own custom code.
+        });
+
         // uncomment if you want to add a UI
         builder.Services.AddRazorPages();
 

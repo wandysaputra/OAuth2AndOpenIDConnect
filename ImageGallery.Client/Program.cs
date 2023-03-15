@@ -31,7 +31,7 @@ builder.Services.AddHttpClient("APIClient", client =>
 // create an HttpClient used for accessing the API
 builder.Services.AddHttpClient("IDPClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:5001/");
+    client.BaseAddress = new Uri("https://localhost:44300/");
 });
 
 /* To store the user's identity
@@ -65,7 +65,7 @@ builder.Services
             
             // The Authority should be set to the address of our identity provider because that is the authority responsible for the identity provided part of the OpenID Connect flows.
             // The middleware will use this value to read the metadata on the discovery endpoint so it knows where to find the different endpoints and other information
-            options.Authority = "https://localhost:5001/";
+            options.Authority = "https://localhost:44300/";
 
             // Should match the ClientId and ClientSecret at the level of the identity provider.
             options.ClientId = "imagegalleryclient";

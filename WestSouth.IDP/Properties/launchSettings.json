@@ -1,12 +1,25 @@
 {
+  "iisSettings": {
+    "windowsAuthentication": true,
+    "anonymousAuthentication": true, // dont disable this as a request to the discovery document is anonymous
+    "iisExpress": {
+      "applicationUrl": "https://localhost:44300", // SSL with IISExpress the port must be between 44300 and 44399
+      "sslPort": 44300
+    }
+  },
   "profiles": {
     "SelfHost": {
       "commandName": "Project",
       "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:5001"
+      } //,"applicationUrl": "https://localhost:5001"
+    },
+    "IISExpress": {
+      "commandName": "IISExpress",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

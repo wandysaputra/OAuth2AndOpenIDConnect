@@ -22,9 +22,12 @@ public class LocalUserProfileService : IProfileService
         context.AddRequestedClaims(claims.Select(c => new Claim(c.Type, c.Value)));
     }
 
-    public async Task IsActiveAsync(IsActiveContext context)
+    public Task IsActiveAsync(IsActiveContext context)
     {
-        var subjectId = context.Subject.GetSubjectId();
-        context.IsActive = await _localUserService.IsUserActiveAsync(subjectId);
+        // temporary set to active for third-party/external login
+        context.IsActive = true;
+        return Task.CompletedTask;
+        //var subjectId = context.Subject.GetSubjectId();
+        //context.IsActive = await _localUserService.IsUserActiveAsync(subjectId);
     }
 }
