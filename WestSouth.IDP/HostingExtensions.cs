@@ -1,3 +1,4 @@
+using Duende.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -45,6 +46,22 @@ internal static class HostingExtensions
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryApiResources(Config.ApiResources)
             .AddInMemoryClients(Config.Clients);
+
+        builder.Services
+            .AddAuthentication()
+            .AddOpenIdConnect("AAD", "Azure Active Directory", options =>
+            {
+                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                options.Authority = "https://login.microsoftonline.com/621cb4b2-eeb8-4699-913d-a651c392babd/v2.0"; // Directory/TenantId Azure AD get from discovery end-point Azure AD of issuer's value
+                options.ClientId = "df55658d-e228-4f72-9f11-b60334edb0e2"; // Client Id Azure AD
+                options.ClientSecret = "Tkt8Q~gJ9yez1EGA6BqFJfCVWIzM_B.bCAUx8bkB"; // Client Secret Azure AD
+                options.ResponseType = "code"; // default by Azure AD
+                options.CallbackPath = new PathString("/signin-aad/"); // SignIn Path in Azure AD
+                options.SignedOutCallbackPath = new PathString("/signout-aad/");  // SignOut Path in Azure AD
+                options.Scope.Add("email"); // matches permission setup by Ms Graph 
+                options.Scope.Add("offline_access");  // matches permission setup by Ms Graph 
+                options.SaveTokens = true;
+            });
 
         return builder.Build();
     }
